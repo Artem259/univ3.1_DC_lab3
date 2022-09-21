@@ -1,30 +1,29 @@
 import jdk.jshell.spi.ExecutionControl;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
 public class MyLock implements Lock {
-    private volatile boolean isFree;
+    private final AtomicBoolean isFree;
 
     public MyLock() {
-        isFree = true; // free by default
+        isFree = new AtomicBoolean(true); // free by default
     }
 
     public void lock() {
         synchronized (this) {
-            while (!isFree) {
+            while (!isFree.get()) {
                 Thread.onSpinWait();
             }
-            isFree = false;
+            isFree.set(false);
         }
     }
 
     @Override
     public void unlock() {
-        synchronized (this) {
-            isFree = true;
-        }
+        isFree.set(true);
     }
 
     @Override
