@@ -18,32 +18,30 @@ public class Barber implements Runnable {
         for(int i = 0; i < visitorN; i++) {
             //---------------------------------------------------------//
             System.out.println("Barber is waiting for a next visitor.");
-            while(armchair.availablePermits() > 0) {
+            do {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }
+            } while (armchair.availablePermits() > 0);
             //---------------------------------------------------------//
             System.out.println("Barber begins to work...");
             try {
                 work.acquire();
                 System.out.println("Barber finished working");
-                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
             //---------------------------------------------------------//
-            while(changing.availablePermits() > 0) {
+            do {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            }
+            } while (changing.availablePermits() > 0);
             changing.release();
-            System.out.println("Barber is waiting while the visitor leaves.");
             armchair.release();
             //---------------------------------------------------------//
         }

@@ -24,13 +24,13 @@ public class Visitor implements Runnable {
         }
         System.out.println("Visitor " + n + " takes a seat and falls asleep.");
         //---------------------------------------------------------//
-        while(work.availablePermits() > 0) {
+        do {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-        }
+        } while (work.availablePermits() > 0);
         System.out.println("Visitor " + n + " wakes up and leaves an armchair.");
         work.release();
         //---------------------------------------------------------//
