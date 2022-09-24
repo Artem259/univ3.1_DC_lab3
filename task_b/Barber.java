@@ -18,7 +18,7 @@ public class Barber implements Runnable {
         for(int i = 0; i < visitorN; i++) {
             //---------------------------------------------------------//
             System.out.println("Barber is waiting for a next visitor.");
-            while(armchair.availablePermits() != 0) {
+            while(armchair.availablePermits() > 0) {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
@@ -35,7 +35,7 @@ public class Barber implements Runnable {
                 throw new RuntimeException(e);
             }
             //---------------------------------------------------------//
-            while(changing.availablePermits() != 0) {
+            while(changing.availablePermits() > 0) {
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
